@@ -31,7 +31,8 @@ The refresh token provides complete access to your Nanit account without requiri
 Now that the initial authentication has been done, and the refresh token has been generated, it's time to start the container:
 
 ```bash
-# Note: use your local IP, reachable from Cam (not 127.0.0.1 nor localhost)
+# Note: use your local IP, reachable from Cam (not 127.0.0.1 nor localhost).
+# Host port and container port must be the same and reflected in the NANIT_RTMP_ADDR variable.
 
 docker run \
   -d \
@@ -73,7 +74,7 @@ This is used to turn on light/brightness and repeat
 |-----------|-------------|------|---------------|
 |   isLightOn        |  Turn on light           |   boolean   |     Required          |
 |   nightLightTimeout       |     Timer to set timeout        |   number   |     Optional. Values: 900, 1800, 3600, 0(infinite)          |
-|    Brightness       |     Camera light brightness        |  number    |       Optional. Values: 0 - 100        |
+|    brightness       |     Camera light brightness        |  number    |       Optional. Values: 0 - 100        |
 
 Example:
 ```
@@ -98,15 +99,15 @@ Used to start/stop whitenoise
 ```
 
 interface Playback {
-    status: "Started" | "Stopped",
-    playbackType: "birds.wav" | "whitenoise.wav" | "waves.wav" | "wind.wav"
+    status: "STARTED" | "STOPPED",
+    playbackType: "Birds.wav" | "White Noise.wav" | "Waves.wav" | "Wind.wav"
 }
 
 Start Playback:
 {
   "playback": {
     "status": "STARTED",
-    "playbackType": "whitenoise.wav"
+    "playbackType": "White Noise.wav"
   }
 }
 ```
