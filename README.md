@@ -100,7 +100,8 @@ Used to start/stop whitenoise
 
 interface Playback {
     status: "STARTED" | "STOPPED",
-    playbackType: "Birds.wav" | "White Noise.wav" | "Waves.wav" | "Wind.wav"
+    playbackType: "Birds.wav" | "White Noise.wav" | "Waves.wav" | "Wind.wav",
+    duration: Values: 900, 1800, 3600, 0(infinite) : Default: 3600  
 }
 
 Start Playback:

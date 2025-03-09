@@ -170,6 +170,7 @@ func handlePlayback(client MQTT.Client, msg MQTT.Message) {
 		Playback struct {
 			Status       string `json:"status"`
 			PlayBackType string `json:"playbackType"`
+			Duration     *int32 `json:"duration"`
 		} `json:"playback"`
 	}
 	if err := json.Unmarshal(msg.Payload(), &mqttPayload); err != nil {
@@ -192,9 +193,11 @@ func handlePlayback(client MQTT.Client, msg MQTT.Message) {
 		}
 	case "STARTED":
 		playbackStatusEnum = CLT.Playback_STARTED
-		// filename := "Whitenoise.wav"
 		filename := mqttPayload.Playback.PlayBackType
-		duration := int32(3600)
+		duration := int32(3600) // Default value
+		if mqttPayload.Playback.Duration != nil {
+			duration = *mqttPayload.Playback.Duration
+		}
 		playbackRequest = &CLT.Request{
 			Playback: &CLT.Playback{
 				Status:   &playbackStatusEnum,
