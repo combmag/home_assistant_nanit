@@ -9,7 +9,7 @@ require (
 	github.com/rs/zerolog v1.20.0
 	github.com/sacOO7/gowebsocket v0.0.0-20201031204121-1620b8bfa516
 	github.com/stretchr/testify v1.6.1
-	google.golang.org/protobuf v1.25.0
+	google.golang.org/protobuf v1.33.0
 )
 
 require (
