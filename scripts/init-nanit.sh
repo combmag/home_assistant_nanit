@@ -60,4 +60,4 @@ if [ "$DEBUG" = true ] ; then
     echo "SESSION_JSON Result: $SESSION_JSON"
 fi
 
-echo "$SESSION_JSON" > ./data/session.json
+echo "$SESSION_JSON" > /data/session.json
