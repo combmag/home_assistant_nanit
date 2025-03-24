@@ -100,7 +100,7 @@ jobs:
       - name: Inspect digests
         run: |
             echo "Contents of /tmp/digests:"
-            ls -l /tmp/digests  # List the files
+            ls -R /tmp/digests  # List the files
             for file in /tmp/digests/*; do
               echo "Digest file: $file"
               cat "$file"  # Display the content of each digest file
