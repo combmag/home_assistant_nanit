@@ -107,7 +107,7 @@ jobs:
             done
       - name: Export digest
         run: |
-              mkdir -p /tmp/digests
+              
               digest="${{ steps.build.outputs.digest }}"
               echo "Digest: $digest"  # Add debug output to check the digest value
               touch "/tmp/digests/${digest#sha256:}"
@@ -122,7 +122,7 @@ jobs:
         
             # Create an array of digests
             digests=()
-            for file in /tmp/digests/digests-*; do
+            for file in /tmp/digests/*; do
               [ -f "$file" ] || continue
               digest=$(cat "$file")  # Read the digest from the file
               digests+=("${{ env.REGISTRY_IMAGE }}@sha256:$digest")
