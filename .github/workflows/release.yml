@@ -79,7 +79,6 @@ jobs:
       - name: Download digests
         uses: actions/download-artifact@v4
         with:
-          name: digests-${{ github.run_id }}-${{ github.run_attempt }}-${{ env.platform_safe_name }}
           path: /tmp/digests
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -96,8 +95,13 @@ jobs:
       - name: Create manifest list and push
         working-directory: /tmp/digests
         run: |
-          docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
-            $(printf '${{ env.REGISTRY_IMAGE }}@sha256:%s ' *)          
+            digests=()
+            for file in *; do
+              [ -f "$file" ] || continue
+              digests+=("${{ env.REGISTRY_IMAGE }}@sha256:$(cat "$file")")
+            done
+            
+            docker buildx imagetools create -t ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }} "${digests[@]}"    
       - name: Inspect image
         run: |
           docker buildx imagetools inspect ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}          
