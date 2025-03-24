@@ -11,7 +11,7 @@ This is a fork from (https://github.com/indiefan/home_assistant_nanit) with adde
 
 While it is possible to build the image locally from the included Dockerfile, it is recommended to install and update by pulling the official image directly from Docker Hub. To pull the image manually without running the container, run:
 
-`docker pull combmag/nanit`
+`docker pull christmagri/nanit`
 
 ## Authentication
 
@@ -21,7 +21,7 @@ Because Nanit requires 2FA authentication, before we can start we need to acquir
 
 Run the bundled init-nanit.sh utility directly via the Docker command line to acquire the token (replace `/path/to/data` with the local path you'd like the container to use for storing session data):
 
-`docker run -it -v /path/to/data:/data --entrypoint=/app/scripts/init-nanit.sh combmag/nanit`
+`docker run -it -v /path/to/data:/data --entrypoint=/app/scripts/init-nanit.sh christmagri/nanit`
 
 ** Important Note regarding Security**
 The refresh token provides complete access to your Nanit account without requiring any additional account information, so be sure to protect your system from access by unauthorized parties, and proceed at your own risk.
@@ -42,7 +42,7 @@ docker run \
   -e NANIT_RTMP_ADDR=xxx.xxx.xxx.xxx:1935 \
   -e NANIT_LOG_LEVEL=trace \
   -p 1935:1935 \
-  combmag/nanit
+  christmagri/nanit
 ```
 
 If this is your initial run, you may want to omit the `-d` flag so you can observe the output to find your `baby_uid` (which will be needed later if you plan on connecting anything to the feed, like Home Assistant). After getting the baby id (which won't change) you can stop the container and restart it with the `-d` flag.
