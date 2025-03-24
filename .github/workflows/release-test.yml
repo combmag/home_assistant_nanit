@@ -121,4 +121,4 @@ jobs:
         
       - name: Inspect image
         run: |
-          docker buildx imagetools inspect ${{ env.REGISTRY_IMAGE }}:${{ env.VERSION }}
+          docker buildx imagetools inspect ${{ env.REGISTRY_IMAGE }}:main
