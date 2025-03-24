@@ -1,11 +1,11 @@
 name: Publish Docker image
 
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
 
 env:
   REGISTRY_IMAGE: christmagri/nanit
+  VERSION: v1.4.2-rc.9  # Set a custom version (manual versioning)
 
 jobs:
   build:
@@ -114,8 +114,8 @@ jobs:
             fi
         
             # Create and push the manifest list
-            docker buildx imagetools create -t ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }} "${digests[@]}"
+            docker buildx imagetools create -t ${{ env.REGISTRY_IMAGE }}:${{ env.VERSION }} "${digests[@]}"
         
       - name: Inspect image
         run: |
-          docker buildx imagetools inspect ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}          
+          docker buildx imagetools inspect ${{ env.REGISTRY_IMAGE }}:${{ env.VERSION }}
