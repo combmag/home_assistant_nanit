@@ -116,26 +116,8 @@ jobs:
       - name: Create manifest list and push
         working-directory: /tmp/digests
         run: |
-            # Ensure the directory contains the expected files
-            echo "Contents of /tmp/digests:"
-            ls /tmp/digests
-        
-            # Create an array of digests
-            digests=()
-            for file in /tmp/digests/*; do
-              [ -f "$file" ] || continue
-              digest=$(cat "$file")  # Read the digest from the file
-              digests+=("${{ env.REGISTRY_IMAGE }}@sha256:$digest")
-            done
-        
-            # If no digests are found, exit with an error
-            if [ ${#digests[@]} -eq 0 ]; then
-              echo "No digests found, skipping manifest creation."
-              exit 1
-            fi
-        
-            # Create and push the manifest list
-            docker buildx imagetools create -t ${{ env.REGISTRY_IMAGE }}:${{ env.VERSION }} "${digests[@]}"
+                docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+                  $(printf '${{ env.REGISTRY_IMAGE }}@sha256:%s ' *)         
         
       - name: Inspect image
         run: |
