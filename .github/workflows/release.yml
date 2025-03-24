@@ -23,6 +23,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Set platform-safe name
+        id: set_name
+        run: |
+          PLATFORM_SAFE_NAME="${{ matrix.platform }}"
+          PLATFORM_SAFE_NAME="${PLATFORM_SAFE_NAME//\//-}"  # Replace '/' with '-'
+          echo "platform_safe_name=$PLATFORM_SAFE_NAME" >> $GITHUB_ENV
+
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
@@ -53,7 +60,7 @@ jobs:
       - name: Upload digest
         uses: actions/upload-artifact@v4
         with:
-          name: digests-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.platform | replace('/', '-') }}
+          name: digests-${{ github.run_id }}-${{ github.run_attempt }}-${{ env.platform_safe_name }}
           path: /tmp/digests/*
           if-no-files-found: error
           retention-days: 1
@@ -63,10 +70,16 @@ jobs:
     needs:
       - build
     steps:
+      - name: Set platform-safe name
+        id: set_name
+        run: |
+          PLATFORM_SAFE_NAME="${{ matrix.platform }}"
+          PLATFORM_SAFE_NAME="${PLATFORM_SAFE_NAME//\//-}"  # Replace '/' with '-'
+          echo "platform_safe_name=$PLATFORM_SAFE_NAME" >> $GITHUB_ENV
       - name: Download digests
         uses: actions/download-artifact@v4
         with:
-          name: digests-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.platform | replace('/', '-') }}
+          name: digests-${{ github.run_id }}-${{ github.run_attempt }}-${{ env.platform_safe_name }}
           path: /tmp/digests
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
