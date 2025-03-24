@@ -1,11 +1,15 @@
-name: Publish Docker image
+name: Publish Docker image manually
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Docker image version'
+        required: true
+        default: 'v1.0.0-rc.1'  # Default version
 
 env:
   REGISTRY_IMAGE: christmagri/nanit
-  VERSION: v1.4.2-rc.9  # Set a custom version (manual versioning)
 
 jobs:
   build:
@@ -92,6 +96,22 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Inspect digests
+        run: |
+            echo "Contents of /tmp/digests:"
+            ls -l /tmp/digests  # List the files
+            for file in /tmp/digests/*; do
+              echo "Digest file: $file"
+              cat "$file"  # Display the content of each digest file
+            done
+      - name: Export digest
+        run: |
+              mkdir -p /tmp/digests
+              digest="${{ steps.build.outputs.digest }}"
+              echo "Digest: $digest"  # Add debug output to check the digest value
+              touch "/tmp/digests/${digest#sha256:}"
+              ls -l /tmp/digests  # List the files after creation
+            
       - name: Create manifest list and push
         working-directory: /tmp/digests
         run: |
