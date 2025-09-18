@@ -5,6 +5,10 @@ This is a fork from (https://github.com/indiefan/home_assistant_nanit) with adde
 * Nanit's (now required) 2FA authentication.
 * Send Custom Nanit Events (Sound/Light) through MQTT
 
+# Documentation
+
+https://deepwiki.com/combmag/home_assistant_nanit/1-overview
+
 # Installation (Docker)
 
 ## Pull the Docker Image
